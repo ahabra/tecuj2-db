@@ -1,4 +1,4 @@
-package com.tek271.util2.dbX;
+package com.tek271.util2.db;
 
 import com.tek271.util2.file.YamlTools;
 import org.apache.commons.lang3.StringUtils;

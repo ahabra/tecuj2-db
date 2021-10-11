@@ -4,3 +4,4 @@
 
 A simple JDBC wrapper to simplify database interactions in Java.
 This used to a part of https://github.com/ahabra/tecuj2, but moved to its own library.
+

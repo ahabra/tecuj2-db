@@ -1,4 +1,4 @@
-package com.tek271.util2.dbX;
+package com.tek271.util2.db;
 
 import com.google.common.base.Splitter;
 import org.sql2o.Query;

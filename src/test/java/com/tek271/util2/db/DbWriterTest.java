@@ -1,4 +1,4 @@
-package com.tek271.util2.dbX;
+package com.tek271.util2.db;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static com.tek271.util2.dbX.PlayEntity.*;
+import static com.tek271.util2.db.PlayEntity.*;
 
 public class DbWriterTest {
 	private DbReader<PlayEntity> dbReader;

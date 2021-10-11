@@ -1,4 +1,4 @@
-package com.tek271.util2.dbX;
+package com.tek271.util2.db;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
