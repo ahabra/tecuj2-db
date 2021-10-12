@@ -43,13 +43,12 @@ public class DbWriterTest {
 	}
 
 	@Test
-	public void testWriteNamedQuery() {
-		DbQueries.QUERY_CACHE.put("k1", PlayEntity.INSERT_SQL);
+	public void testWriteQuery() {
 		PlayEntity playEntity = create(1);
 		dbWriter
 				.param("name", playEntity.name)
 				.param("date", playEntity.date)
-				.sqlFromCachedQuery("k1")
+				.sql(PlayEntity.INSERT_SQL)
 				.write();
 		List<PlayEntity> found = dbReader.sql("select * from PlayEntity").read();
 		assertEquals(1, found.size());
@@ -57,13 +56,12 @@ public class DbWriterTest {
 	}
 
 	@Test
-	public void testWriteNamedQueryAndGetId() {
-		DbQueries.QUERY_CACHE.put("k1", PlayEntity.INSERT_SQL);
+	public void testWriteQueryAndGetId() {
 		PlayEntity playEntity = create(1);
 		long id = dbWriter
 				.param("name", playEntity.name)
 				.param("date", playEntity.date)
-				.sqlFromCachedQuery("k1")
+				.sql(PlayEntity.INSERT_SQL)
 				.returnKeyAfterWrite(true)
 				.write();
 		List<PlayEntity> found = dbReader.sql("select * from PlayEntity").read();

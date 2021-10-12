@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class DbQueries extends HashMap<String, String> {
-	public static final DbQueries QUERY_CACHE = new DbQueries();
-	private static String cachedQueryFile;
 
 	public DbQueries() {}
 
@@ -23,17 +21,9 @@ public class DbQueries extends HashMap<String, String> {
 		return this;
 	}
 
-	public synchronized static DbQueries initCache(String queryFile) {
-		if (StringUtils.equals(queryFile, cachedQueryFile)) {
-			return QUERY_CACHE;
-		}
-		cachedQueryFile = queryFile;
-		return QUERY_CACHE.readFile(queryFile);
-	}
-
 	public String get(String queryName) {
 		if (isEmpty()) {
-			throw new NoSuchElementException("DbQueries is empty. Plesse make sure that you initialize it.");
+			throw new NoSuchElementException("DbQueries is empty. Please make sure that you initialize it.");
 		}
 		return super.get(queryName);
 	}

@@ -45,15 +45,6 @@ public class DbReaderTest {
 	}
 
 	@Test
-	public void testReadNamedQuery() {
-		DbQueries.QUERY_CACHE.put("k1", "select * from PlayEntity");
-		List<PlayEntity> inserted = DbHelper.insertPlayEntities(3);
-
-		List<PlayEntity> found = sut.sqlFromCachedQuery("k1").read();
-		assertEquals(inserted, found);
-	}
-
-	@Test
 	public void testReadMaps() {
 		List<PlayEntity> inserted = DbHelper.insertPlayEntities(3);
 		List<Map<String, Object>> found = sut
