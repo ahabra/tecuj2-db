@@ -1,5 +1,6 @@
 package com.tek271.util2.db;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sql2o.Connection;
@@ -9,11 +10,29 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 
+/**
+ * Encapsulates a JDBC connection
+ */
 public class DbConnection implements AutoCloseable {
 	private static final Logger LOGGER = LogManager.getLogger(DbConnection.class);
 	private String url, user, password;
 	protected Connection sql2oConnection;
 	private boolean isTransaction = false;
+
+	public DbConnection driver(String driver) {
+		loadDriver(driver);
+		return this;
+	}
+
+	private static void loadDriver(String driver) {
+		if (StringUtils.isBlank(driver)) return;
+
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot load class " + driver, e);
+		}
+	}
 
 	public DbConnection url(String url) {
 		this.url = url;
@@ -28,14 +47,6 @@ public class DbConnection implements AutoCloseable {
 	public DbConnection password(String password) {
 		this.password = password;
 		return this;
-	}
-
-	public DbConnection params(String url, String user, String password) {
-		return url(url).user(user).password(password);
-	}
-
-	public DbConnection params(Map<String, String> map) {
-		return params(map.get("url"), map.get("user"), map.get("password"));
 	}
 
 	public DbConnection connect() {
@@ -81,5 +92,7 @@ public class DbConnection implements AutoCloseable {
 	public boolean isConnected() {
 		return sql2oConnection != null;
 	}
+
+
 
 }
