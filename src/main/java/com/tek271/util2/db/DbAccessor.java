@@ -14,7 +14,6 @@ public abstract class DbAccessor<T extends DbAccessor<?>> {
 	protected DbConnection dbConnection;
 	protected final Map<String, Object> parameters = new HashMap<>();
 	protected String sql;
-	protected String script;  // script is a list of sql queries
 
 	protected ResourceTools resourceTools = new ResourceTools();
 
@@ -42,27 +41,14 @@ public abstract class DbAccessor<T extends DbAccessor<?>> {
 
 	public T sql(String sql) {
 		this.sql = sql;
-		this.script = null;
 		return thisObj;
 	}
 
-	public T script(String script) {
-		this.script = script;
-		this.sql = null;
-		return thisObj;
-	}
-
-	public T scriptFromFile(String fileName) {
-		String text = resourceTools.readAsString(fileName);
-		return script(text);
-	}
 
 	protected Query createQuery(DbConnection con) {
 		LOGGER.debug(sql);
 		Query query = con.sql2oConnection.createQuery(sql);
-		if (parameters != null) {
-			parameters.forEach(query::addParameter);
-		}
+		parameters.forEach(query::addParameter);
 		return query;
 	}
 
