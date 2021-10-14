@@ -18,8 +18,8 @@ public class DbWriterTest {
 		dbReader = new DbReader<>(PlayEntity.class);
 		dbWriter = new DbWriter();
 
-		DbHelper.configureDb(dbReader);
-		DbHelper.configureDb(dbWriter);
+		TestHelper.configureDb(dbReader);
+		TestHelper.configureDb(dbWriter);
 		dbWriter.sql("drop table if exists PlayEntity;").write();
 		dbWriter.scriptFromFile("DbReaderTest.sql").write();
 	}

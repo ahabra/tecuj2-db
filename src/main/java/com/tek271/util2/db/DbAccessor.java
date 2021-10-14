@@ -8,17 +8,17 @@ import org.sql2o.Query;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class DbAccessor<T extends DbAccessor> {
+public abstract class DbAccessor<T extends DbAccessor<?>> {
 	private static final Logger LOGGER = LogManager.getLogger(DbAccessor.class);
 
 	protected DbConnection dbConnection;
 	protected final Map<String, Object> parameters = new HashMap<>();
 	protected String sql;
-	protected String script;
+	protected String script;  // script is a list of sql queries
 
 	protected ResourceTools resourceTools = new ResourceTools();
 
-	private T thisObj; // used to simplify the builder pattern
+	private final T thisObj; // used to simplify the builder pattern
 	protected abstract T getThis();
 
 	public DbAccessor() {

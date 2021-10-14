@@ -18,8 +18,8 @@ public class DbReaderTest {
 		sut = new DbReader<>(PlayEntity.class);
 		DbWriter dbWriter = new DbWriter();
 
-		DbHelper.configureDb(sut);
-		DbHelper.configureDb(dbWriter);
+		TestHelper.configureDb(sut);
+		TestHelper.configureDb(dbWriter);
 		dbWriter.sql("drop table if exists PlayEntity;").write();
 		dbWriter.scriptFromFile("DbReaderTest.sql").write();
 	}
@@ -36,7 +36,7 @@ public class DbReaderTest {
 
 	@Test
 	public void testWriteThenRead() {
-		List<PlayEntity> inserted = DbHelper.insertPlayEntities(3);
+		List<PlayEntity> inserted = TestHelper.insertPlayEntities(3);
 		List<PlayEntity> found = sut
 				.sql("select * from PlayEntity")
 				.read();
@@ -46,7 +46,7 @@ public class DbReaderTest {
 
 	@Test
 	public void testReadMaps() {
-		List<PlayEntity> inserted = DbHelper.insertPlayEntities(3);
+		List<PlayEntity> inserted = TestHelper.insertPlayEntities(3);
 		List<Map<String, Object>> found = sut
 				.sql("select * from PlayEntity")
 				.readMaps();

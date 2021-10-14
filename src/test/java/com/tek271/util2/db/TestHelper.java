@@ -4,9 +4,9 @@ package com.tek271.util2.db;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbHelper {
+public class TestHelper {
 
-	public static void configureDb(DbAccessor dbAccessor) {
+	public static void configureDb(DbAccessor<?> dbAccessor) {
 		DbConnection dbConnection = new DbConnection().url("jdbc:hsqldb:mem:tecuj-test")
 				.user("SA")
 				.password("SA");
