@@ -13,7 +13,8 @@ public class DbReader<E> extends DbAccessor<DbReader<E>> {
 		return this;
 	}
 
-	public DbReader(Class<E> entityType) {
+	public DbReader(DbConnection dbConnection, Class<E> entityType) {
+		super(dbConnection);
 		this.entityType = entityType;
 	}
 

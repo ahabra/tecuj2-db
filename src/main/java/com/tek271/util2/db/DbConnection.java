@@ -4,9 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
-
-import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 
@@ -16,7 +15,7 @@ import static org.apache.commons.lang3.StringUtils.substringBefore;
 public class DbConnection implements AutoCloseable {
 	private static final Logger LOGGER = LogManager.getLogger(DbConnection.class);
 	private String url, user, password;
-	protected Connection sql2oConnection;
+	private Connection sql2oConnection;
 	private boolean isTransaction = false;
 
 	public DbConnection driver(String driver) {
@@ -93,6 +92,16 @@ public class DbConnection implements AutoCloseable {
 		return sql2oConnection != null;
 	}
 
+	Query createQuery(String sql) {
+		LOGGER.debug(sql);
+		if (!isConnected()) {
+			throw new IllegalStateException("You must establish a connection before createQuery()");
+		}
+		return sql2oConnection.createQuery(sql);
+	}
 
+	<T> T getKeyOfLastInsert(Class<T> cls) {
+		return sql2oConnection.getKey(cls);
+	}
 
 }

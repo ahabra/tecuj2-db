@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.tek271.util2.db.TestHelper.connect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static com.tek271.util2.db.PlayEntity.*;
 
@@ -15,11 +16,9 @@ public class DbWriterTest {
 
 	@BeforeEach
 	public void setUp() {
-		dbReader = new DbReader<>(PlayEntity.class);
-		dbWriter = new DbWriter();
+		dbReader = new DbReader<>(connect(), PlayEntity.class);
+		dbWriter = new DbWriter(connect());
 
-		TestHelper.configureDb(dbReader);
-		TestHelper.configureDb(dbWriter);
 		dbWriter.sql("drop table if exists PlayEntity;").write();
 		dbWriter.writeScriptFromFile("DbReaderTest.sql");
 	}
@@ -33,7 +32,6 @@ public class DbWriterTest {
 						.param("date", e.date)
 						.sql(PlayEntity.INSERT_SQL)
 						.returnKeyAfterWrite(true)
-						.withDbConnection(con)
 						.write();
 			}
 			con.commit();

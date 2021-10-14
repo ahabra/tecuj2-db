@@ -6,16 +6,15 @@ import java.util.List;
 
 public class TestHelper {
 
-	public static void configureDb(DbAccessor<?> dbAccessor) {
-		DbConnection dbConnection = new DbConnection().url("jdbc:hsqldb:mem:tecuj-test")
+
+	public static DbConnection connect() {
+		return new DbConnection().url("jdbc:hsqldb:mem:tecuj-test")
 				.user("SA")
 				.password("SA");
-		dbAccessor.withDbConnection(dbConnection);
 	}
 
 	public static List<PlayEntity> insertPlayEntities(PlayEntity... entities) {
-		DbWriter dbWriter = new DbWriter();
-		configureDb(dbWriter);
+		DbWriter dbWriter = new DbWriter(connect());
 
 		List<PlayEntity> result = new ArrayList<>();
 		for (PlayEntity e: entities) {

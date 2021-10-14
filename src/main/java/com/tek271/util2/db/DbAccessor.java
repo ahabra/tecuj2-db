@@ -1,17 +1,13 @@
 package com.tek271.util2.db;
 
 import com.tek271.util2.file.ResourceTools;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.sql2o.Query;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class DbAccessor<T extends DbAccessor<?>> {
-	private static final Logger LOGGER = LogManager.getLogger(DbAccessor.class);
-
-	protected DbConnection dbConnection;
+	protected final DbConnection dbConnection;
 	protected final Map<String, Object> parameters = new HashMap<>();
 	protected String sql;
 
@@ -20,13 +16,9 @@ public abstract class DbAccessor<T extends DbAccessor<?>> {
 	private final T thisObj; // used to simplify the builder pattern
 	protected abstract T getThis();
 
-	public DbAccessor() {
-		thisObj = getThis();
-	}
-
-	public T withDbConnection(DbConnection dbConnection) {
+	protected DbAccessor(DbConnection dbConnection) {
 		this.dbConnection = dbConnection;
-		return thisObj;
+		thisObj = getThis();
 	}
 
 	public T param(String name, Object value) {
@@ -46,8 +38,7 @@ public abstract class DbAccessor<T extends DbAccessor<?>> {
 
 
 	protected Query createQuery(DbConnection con) {
-		LOGGER.debug(sql);
-		Query query = con.sql2oConnection.createQuery(sql);
+		Query query = con.createQuery(sql);
 		parameters.forEach(query::addParameter);
 		return query;
 	}

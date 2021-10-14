@@ -7,6 +7,10 @@ public class DbWriter extends DbAccessor<DbWriter> {
 	private static final long NO_KEY = Long.MIN_VALUE;
 	private boolean isReturnKey;
 
+	public DbWriter(DbConnection dbConnection) {
+		super(dbConnection);
+	}
+
 	protected DbWriter getThis() {
 		return this;
 	}
@@ -28,7 +32,7 @@ public class DbWriter extends DbAccessor<DbWriter> {
 		Query query = createQuery(con);
 		query.executeUpdate();
 		if (isReturnKey) {
-			return con.sql2oConnection.getKey(long.class);
+			return con.getKeyOfLastInsert(long.class);
 		}
 		return NO_KEY;
 	}
@@ -37,7 +41,7 @@ public class DbWriter extends DbAccessor<DbWriter> {
 		Iterable<String> queries = Splitter.on(";\n").trimResults().omitEmptyStrings().split(script);
 		boolean isConnected = dbConnection.isConnected();
 		if (!isConnected) dbConnection.connect();
-		DbWriter dbWriter = new DbWriter().withDbConnection(dbConnection);
+		DbWriter dbWriter = new DbWriter(dbConnection);
 
 		for (String sql: queries) {
 			dbWriter.sql(sql).write();

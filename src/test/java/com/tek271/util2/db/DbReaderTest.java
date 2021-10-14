@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tek271.util2.db.TestHelper.connect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -15,11 +16,9 @@ public class DbReaderTest {
 
 	@BeforeEach
 	public void setUp() {
-		sut = new DbReader<>(PlayEntity.class);
-		DbWriter dbWriter = new DbWriter();
+		sut = new DbReader<>(connect(), PlayEntity.class);
+		DbWriter dbWriter = new DbWriter(connect() );
 
-		TestHelper.configureDb(sut);
-		TestHelper.configureDb(dbWriter);
 		dbWriter.sql("drop table if exists PlayEntity;").write();
 		dbWriter.writeScriptFromFile("DbReaderTest.sql");
 	}
