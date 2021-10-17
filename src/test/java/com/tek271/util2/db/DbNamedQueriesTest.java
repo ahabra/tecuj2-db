@@ -8,12 +8,12 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class DbQueriesTest {
-	private DbQueries sut;
+public class DbNamedQueriesTest {
+	private DbNamedQueries sut;
 
 	@BeforeEach
 	public void setUp() {
-		sut = new DbQueries();
+		sut = new DbNamedQueries();
 	}
 
 	@Test

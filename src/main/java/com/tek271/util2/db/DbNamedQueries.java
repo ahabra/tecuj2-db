@@ -1,21 +1,20 @@
 package com.tek271.util2.db;
 
 import com.tek271.util2.file.YamlTools;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class DbQueries extends HashMap<String, String> {
+public class DbNamedQueries extends HashMap<String, String> {
 
-	public DbQueries() {}
+	public DbNamedQueries() {}
 
-	public DbQueries(Map<String, String> queries) {
+	public DbNamedQueries(Map<String, String> queries) {
 		this.putAll(queries);
 	}
 
-	public DbQueries readFile(String queryFile) {
+	public DbNamedQueries readFile(String queryFile) {
 		clear();
 		putAll(new YamlTools().readFile(queryFile));
 		return this;

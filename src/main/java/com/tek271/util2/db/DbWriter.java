@@ -24,9 +24,12 @@ public class DbWriter extends DbAccessor<DbWriter> {
 	public <T> T writeAndReturnNewKey(Class<T> classOfKey) {
 		boolean isConnected = dbConnection.isConnected();
 		if (!isConnected) dbConnection.connect();
-		T key = write(dbConnection, classOfKey);
-		if (!isConnected) dbConnection.close();
-		return key;
+
+		try {
+			return write(dbConnection, classOfKey);
+		} finally {
+			if (!isConnected) dbConnection.close();
+		}
 	}
 
 	private <T> T write(DbConnection con, Class<T> classOfKey) {
@@ -38,16 +41,20 @@ public class DbWriter extends DbAccessor<DbWriter> {
 		return null;
 	}
 
+	/**
+	 * Run a list of "write" queries
+	 * @param script lines of sql queries where each sql statement is terminated by a semicolon
+	 */
 	public void writeScript(String script) {
 		Iterable<String> queries = Splitter.on(";\n").trimResults().omitEmptyStrings().split(script);
 		boolean isConnected = dbConnection.isConnected();
 		if (!isConnected) dbConnection.connect();
-		DbWriter dbWriter = new DbWriter(dbConnection);
 
-		for (String sql: queries) {
-			dbWriter.sql(sql).write();
+		try {
+			queries.forEach(q -> sql(q).write(dbConnection, null));
+		} finally {
+			if (!isConnected) dbConnection.close();
 		}
-		if (!isConnected) dbConnection.close();
 	}
 
 	public void writeScriptFromFile(String fileName) {
