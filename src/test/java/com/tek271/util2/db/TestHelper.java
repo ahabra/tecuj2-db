@@ -21,8 +21,7 @@ public class TestHelper {
 			e.id = dbWriter.param("name", e.name)
 					.param("date", e.date)
 					.sql(PlayEntity.INSERT_SQL)
-					.returnKeyAfterWrite(true)
-					.write();
+					.writeAndReturnNewKey();
 			result.add(e);
 		}
 		return result;

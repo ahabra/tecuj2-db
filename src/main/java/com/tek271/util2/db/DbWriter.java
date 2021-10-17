@@ -4,8 +4,6 @@ import com.google.common.base.Splitter;
 import org.sql2o.Query;
 
 public class DbWriter extends DbAccessor<DbWriter> {
-	private static final long NO_KEY = Long.MIN_VALUE;
-	private boolean isReturnKey;
 
 	public DbWriter(DbConnection dbConnection) {
 		super(dbConnection);
@@ -15,26 +13,29 @@ public class DbWriter extends DbAccessor<DbWriter> {
 		return this;
 	}
 
-	public DbWriter returnKeyAfterWrite(boolean isReturnKey) {
-		this.isReturnKey = isReturnKey;
-		return this;
+	public void write() {
+		writeAndReturnNewKey(null);
 	}
 
-	public long write() {
+	public long writeAndReturnNewKey() {
+		return writeAndReturnNewKey(long.class);
+	}
+
+	public <T> T writeAndReturnNewKey(Class<T> classOfKey) {
 		boolean isConnected = dbConnection.isConnected();
 		if (!isConnected) dbConnection.connect();
-		long key = write(dbConnection);
+		T key = write(dbConnection, classOfKey);
 		if (!isConnected) dbConnection.close();
 		return key;
 	}
 
-	private long write(DbConnection con) {
+	private <T> T write(DbConnection con, Class<T> classOfKey) {
 		Query query = createQuery(con);
 		query.executeUpdate();
-		if (isReturnKey) {
-			return con.getKeyOfLastInsert(long.class);
+		if (classOfKey != null) {
+			return con.getKeyOfLastInsert(classOfKey);
 		}
-		return NO_KEY;
+		return null;
 	}
 
 	public void writeScript(String script) {
