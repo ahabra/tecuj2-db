@@ -1,0 +1,14 @@
+# Example queries file
+
+findUserById: >
+  select * from user
+  where id = :id
+
+
+findBookByAuthor: >
+  select * from book
+  where author_name = :author
+
+insertBook: >
+  insert into book (title, author, isbn, price)
+  values(:title, :author, :isbn, :price)

@@ -28,9 +28,10 @@ public class DbReaderTest {
 		Map<String, Object> map = new HashMap<>();
 		map.put("k1", "v1");
 		map.put("k2", 3);
-		sut.params(map);
+		DbReader<PlayEntity> reader = sut.params(map);
 
 		assertEquals(map, sut.parameters);
+		assertEquals(sut, reader);
 	}
 
 	@Test

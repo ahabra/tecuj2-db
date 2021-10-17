@@ -1,7 +1,0 @@
-q1: >
-  select * from t1
-
-
-q2: >
-  a
-  b
